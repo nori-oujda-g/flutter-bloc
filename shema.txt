@@ -1,0 +1,17 @@
+lib/
+│
+├── blocs/
+│   ├── post_bloc.dart
+│   ├── post_event.dart
+│   └── post_state.dart
+│
+├── models/
+│   └── post.dart
+│
+├── repositories/
+│   └── post_repository.dart
+│
+├── view/
+│   └── post_view.dart
+│
+└── main.dart

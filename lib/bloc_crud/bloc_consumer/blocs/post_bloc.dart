@@ -5,11 +5,11 @@ import '../repositories/post_repository.dart';
 import 'post_event.dart';
 import 'post_state.dart';
 
-class PostBloc extends Bloc<PostEvent, PostState> {
-  final PostRepository repository;
+class PostConsumerBloc extends Bloc<PostEvent, PostState> {
+  final PostConsumerRepository repository;
 
-  PostBloc(this.repository) : super(PostInitial()) {
-    on<LoadPosts>((event, emit) async {
+  PostConsumerBloc(this.repository) : super(PostInitial()) {
+    on<FetchConsumerPosts>((event, emit) async {
       emit(PostLoading());
       try {
         final posts = await repository.fetchPosts();
@@ -23,7 +23,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       if (state is PostLoaded) {
         try {
           await repository.createPost(event.post);
-          add(LoadPosts());
+          add(FetchConsumerPosts());
         } catch (e) {
           emit(PostError("Erreur d'ajout: $e "));
         }
@@ -33,7 +33,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       if (state is PostLoaded) {
         try {
           await repository.updatePost(event.post);
-          add(LoadPosts());
+          add(FetchConsumerPosts());
         } catch (e) {
           emit(PostError("Erreur de mise à jour $e "));
         }
@@ -44,7 +44,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       if (state is PostLoaded) {
         try {
           await repository.deletePost(event.id);
-          add(LoadPosts());
+          add(FetchConsumerPosts());
         } catch (e) {
           emit(PostError("Erreur de suppression: $e "));
         }

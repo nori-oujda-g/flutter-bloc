@@ -8,15 +8,18 @@ import 'package:http/http.dart' as http;
 import 'post_event.dart';
 import 'post_state.dart';
 
-class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc() : super(PostInitial()) {
-    on<FetchPosts>(_onFetchPosts);
+class PostListenerBloc extends Bloc<PostEvent, PostState> {
+  PostListenerBloc() : super(PostInitial()) {
+    on<FetchListenerPosts>(_onFetchListenerPosts);
     on<AddPost>(_onAddPost);
     on<UpdatePost>(_onUpdatePost);
     on<DeletePost>(_onDeletePost);
   }
 
-  Future<void> _onFetchPosts(FetchPosts event, Emitter<PostState> emit) async {
+  Future<void> _onFetchListenerPosts(
+    FetchListenerPosts event,
+    Emitter<PostState> emit,
+  ) async {
     emit(PostLoading());
     try {
       final response = await http.get(Uri.parse(baseUrl));
@@ -40,7 +43,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         headers: {'Content-Type': 'application/json'},
       );
       emit(PostActionSuccess());
-      add(FetchPosts());
+      add(FetchListenerPosts());
     } catch (e) {
       emit(PostError(e.toString()));
     }
@@ -54,7 +57,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         headers: {'Content-Type': 'application/json'},
       );
       emit(PostActionSuccess());
-      add(FetchPosts());
+      add(FetchListenerPosts());
     } catch (e) {
       emit(PostError(e.toString()));
     }
@@ -64,7 +67,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       await http.delete(Uri.parse('$baseUrl/${event.id}'));
       emit(PostActionSuccess());
-      add(FetchPosts());
+      add(FetchListenerPosts());
     } catch (e) {
       emit(PostError(e.toString()));
     }

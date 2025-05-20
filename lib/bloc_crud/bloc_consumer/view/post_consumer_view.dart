@@ -9,7 +9,7 @@ import '../blocs/post_state.dart';
 
 enum Operation { ADD, UPDATE }
 
-class PostView extends StatelessWidget {
+class PostConsumerView extends StatelessWidget {
   static final Post post0 = Post(id: 0, userId: 0, body: '', title: '');
   Post setPost = post0;
   final String title1 = 'zzz';
@@ -20,7 +20,7 @@ class PostView extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: BlocConsumer<PostBloc, PostState>(
+            child: BlocConsumer<PostConsumerBloc, PostState>(
               listener: (context, state) {
                 if (state is PostError) {
                   ScaffoldMessenger.of(
@@ -135,7 +135,7 @@ class PostView extends StatelessWidget {
                     body: bodyController.text,
                   );
                   print('commit to post = $post');
-                  context.read<PostBloc>().add(
+                  context.read<PostConsumerBloc>().add(
                     operation == Operation.ADD
                         ? AddPost(post)
                         : operation == Operation.UPDATE
@@ -177,7 +177,7 @@ class PostView extends StatelessWidget {
             ElevatedButton(
               child: const Text('Confirmer'),
               onPressed: () {
-                context.read<PostBloc>().add(DeletePost(id));
+                context.read<PostConsumerBloc>().add(DeletePost(id));
                 Navigator.pop(context);
               },
             ),

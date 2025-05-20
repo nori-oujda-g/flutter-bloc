@@ -1,11 +1,11 @@
-import 'package:bloc2/bloc_crud/bloc_builder/blocs/post_bloc.dart';
-import 'package:bloc2/bloc_crud/bloc_builder/blocs/post_event.dart';
-import 'package:bloc2/bloc_crud/bloc_builder/blocs/post_state.dart';
+import 'package:bloc2/bloc_crud/bloc_listener/blocs/post_bloc.dart';
+import 'package:bloc2/bloc_crud/bloc_listener/blocs/post_event.dart';
+import 'package:bloc2/bloc_crud/bloc_listener/blocs/post_state.dart';
 import 'package:bloc2/bloc_crud/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PostView extends StatelessWidget {
+class PostListenerView extends StatelessWidget {
   final userIdController = TextEditingController();
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
@@ -50,7 +50,7 @@ class PostView extends StatelessWidget {
                   final title = titleController.text;
                   final body = bodyController.text;
                   if (post == null) {
-                    context.read<PostBloc>().add(
+                    context.read<PostListenerBloc>().add(
                       AddPost(
                         Post(
                           id: 0,
@@ -61,7 +61,7 @@ class PostView extends StatelessWidget {
                       ),
                     );
                   } else {
-                    context.read<PostBloc>().add(
+                    context.read<PostListenerBloc>().add(
                       UpdatePost(
                         Post(
                           id: post.id,
@@ -98,7 +98,7 @@ class PostView extends StatelessWidget {
             ElevatedButton(
               child: const Text('Confirmer'),
               onPressed: () {
-                context.read<PostBloc>().add(DeletePost(id));
+                context.read<PostListenerBloc>().add(DeletePost(id));
                 Navigator.pop(context);
               },
             ),
@@ -111,8 +111,8 @@ class PostView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('CRUD avec BLoC builder')),
-      body: BlocListener<PostBloc, PostState>(
+      appBar: AppBar(title: const Text('CRUD avec BLoC Listener')),
+      body: BlocListener<PostListenerBloc, PostState>(
         listener: (context, state) {
           if (state is PostError) {
             ScaffoldMessenger.of(
@@ -124,7 +124,7 @@ class PostView extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text('Succès de l\'action !')));
           }
         },
-        child: BlocBuilder<PostBloc, PostState>(
+        child: BlocBuilder<PostListenerBloc, PostState>(
           builder: (context, state) {
             if (state is PostLoading) {
               return Center(child: CircularProgressIndicator());
@@ -148,7 +148,7 @@ class PostView extends StatelessWidget {
                           onPressed: () {
                             confirmeDelete(context, post.id);
                           },
-                          //  => context.read<PostBloc>().add(
+                          //  => context.read<PostListenerBloc>().add(
                           //   DeletePost(post.id),
                           // )
                         ),

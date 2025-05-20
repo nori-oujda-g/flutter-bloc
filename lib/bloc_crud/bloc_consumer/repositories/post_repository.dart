@@ -5,7 +5,7 @@ import 'package:bloc2/bloc_crud/env.dart';
 import 'package:bloc2/bloc_crud/models/post.dart';
 import 'package:http/http.dart' as http;
 
-class PostRepository {
+class PostConsumerRepository {
   Future<List<Post>> fetchPosts() async {
     final response = await http.get(Uri.parse(baseUrl));
     final data = json.decode(response.body) as List;

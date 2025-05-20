@@ -6,7 +6,7 @@ abstract class PostEvent extends Equatable {
   const PostEvent();
 }
 
-class FetchPosts extends PostEvent {
+class FetchBuilderPosts extends PostEvent {
   @override
   List<Object?> get props => [];
 }
